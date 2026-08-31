@@ -54,536 +54,644 @@ st.set_page_config(
 
 # ============================================================
 # CUSTOM CSS
-# DESKTOP + MOBILE RESPONSIVE
+# DESKTOP + TABLET + MOBILE
 # ============================================================
 
 st.markdown(
     """
-    <style>
+<style>
 
-    /* =====================================================
-       GLOBAL
-       ===================================================== */
+/* ============================================================
+   GLOBAL
+   ============================================================ */
 
-    .stApp {
-        background:
-            linear-gradient(
-                135deg,
-                #f8fafc 0%,
-                #eef2ff 50%,
-                #f8fafc 100%
-            );
-    }
+.stApp {
+    background:
+        linear-gradient(
+            135deg,
+            #f8fafc 0%,
+            #eef2ff 50%,
+            #f8fafc 100%
+        );
+}
 
-    #MainMenu {
-        visibility: hidden;
-    }
+#MainMenu {
+    visibility: hidden;
+}
 
-    footer {
-        visibility: hidden;
-    }
+footer {
+    visibility: hidden;
+}
 
-    header {
-        visibility: hidden;
-    }
+header {
+    visibility: hidden;
+}
+
+.block-container {
+    max-width: 1200px;
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.hero {
+    background:
+        linear-gradient(
+            135deg,
+            #111827,
+            #1e3a8a
+        );
+
+    padding: 45px 50px;
+
+    border-radius: 24px;
+
+    margin-bottom: 30px;
+
+    box-shadow:
+        0 15px 40px
+        rgba(30, 58, 138, 0.20);
+
+    overflow: hidden;
+}
+
+.hero h1 {
+    color: #ffffff !important;
+
+    font-size: 44px !important;
+
+    font-weight: 800 !important;
+
+    margin: 0 0 12px 0 !important;
+
+    line-height: 1.15 !important;
+}
+
+.hero p {
+    color: #dbeafe !important;
+
+    font-size: 18px !important;
+
+    line-height: 1.6 !important;
+
+    margin: 0 !important;
+}
+
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+
+.info-card {
+    background: #ffffff;
+
+    padding: 24px;
+
+    border-radius: 18px;
+
+    border: 1px solid #e5e7eb;
+
+    box-shadow:
+        0 8px 25px
+        rgba(15, 23, 42, 0.06);
+
+    margin-bottom: 20px;
+
+    overflow: hidden;
+
+    overflow-wrap: anywhere;
+
+    word-break: break-word;
+}
+
+.info-card h1,
+.info-card h2,
+.info-card h3 {
+    overflow-wrap: anywhere;
+}
+
+
+/* ============================================================
+   SECTION TITLES
+   ============================================================ */
+
+.section-title {
+    font-size: 28px;
+
+    font-weight: 750;
+
+    color: #111827;
+
+    margin-top: 30px;
+
+    margin-bottom: 18px;
+
+    line-height: 1.25;
+}
+
+
+/* ============================================================
+   SKILL BADGES
+   ============================================================ */
+
+.skill-badge {
+    display: inline-block;
+
+    background: #dbeafe;
+
+    color: #1e3a8a;
+
+    padding: 8px 14px;
+
+    border-radius: 30px;
+
+    margin: 4px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    border: 1px solid #bfdbfe;
+
+    max-width: 100%;
+
+    overflow-wrap: anywhere;
+}
+
+.missing-badge {
+    display: inline-block;
+
+    background: #fee2e2;
+
+    color: #991b1b;
+
+    padding: 8px 14px;
+
+    border-radius: 30px;
+
+    margin: 4px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    border: 1px solid #fecaca;
+
+    max-width: 100%;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ============================================================
+   SCORE CARDS
+   ============================================================ */
+
+.score-box {
+    text-align: center;
+
+    background: #ffffff;
+
+    padding: 25px;
+
+    border-radius: 18px;
+
+    border: 1px solid #e5e7eb;
+
+    box-shadow:
+        0 8px 25px
+        rgba(15, 23, 42, 0.06);
+
+    min-height: 115px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    width: 100%;
+}
+
+.score-number {
+    font-size: 42px;
+
+    font-weight: 800;
+
+    color: #1d4ed8;
+
+    line-height: 1.1;
+}
+
+.score-label {
+    font-size: 14px;
+
+    color: #64748b;
+
+    font-weight: 600;
+
+    margin-top: 8px;
+}
+
+
+/* ============================================================
+   FILE UPLOADER
+   ============================================================ */
+
+[data-testid="stFileUploader"] {
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    padding: 10px;
+
+    border: 1px solid #e5e7eb;
+
+    width: 100%;
+}
+
+
+/* ============================================================
+   BUTTON
+   ============================================================ */
+
+.stButton > button {
+
+    width: 100%;
+
+    border-radius: 12px;
+
+    padding: 12px 20px;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    border: none;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #4f46e5
+        );
+
+    color: white;
+
+    transition: 0.2s;
+
+    min-height: 48px;
+}
+
+.stButton > button:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(37, 99, 235, 0.25);
+}
+
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+
+[data-testid="stSidebar"] {
+
+    background: #ffffff;
+
+    border-right:
+        1px solid #e5e7eb;
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 900px) {
 
     .block-container {
-        max-width: 1200px;
-        padding-top: 2rem;
-        padding-bottom: 4rem;
-        padding-left: 2rem;
-        padding-right: 2rem;
+
+        padding-left: 1.2rem;
+
+        padding-right: 1.2rem;
+
+        padding-top: 1.5rem;
     }
 
-
-    /* =====================================================
-       HERO
-       ===================================================== */
-
     .hero {
-        background:
-            linear-gradient(
-                135deg,
-                #111827,
-                #1e3a8a
-            );
 
-        padding: 45px 50px;
+        padding: 35px 30px;
 
-        border-radius: 24px;
-
-        margin-bottom: 30px;
-
-        box-shadow:
-            0 15px 40px
-            rgba(30, 58, 138, 0.20);
     }
 
     .hero h1 {
-        color: white;
-        font-size: 44px;
-        font-weight: 800;
-        margin-bottom: 12px;
-        line-height: 1.15;
+
+        font-size: 36px !important;
+
     }
 
     .hero p {
-        color: #dbeafe;
-        font-size: 18px;
-        line-height: 1.6;
-        margin-bottom: 0;
+
+        font-size: 17px !important;
+
     }
-
-
-    /* =====================================================
-       CARDS
-       ===================================================== */
-
-    .info-card {
-        background: white;
-
-        padding: 24px;
-
-        border-radius: 18px;
-
-        border: 1px solid #e5e7eb;
-
-        box-shadow:
-            0 8px 25px
-            rgba(15, 23, 42, 0.06);
-
-        margin-bottom: 20px;
-
-        overflow-wrap: anywhere;
-        word-break: break-word;
-    }
-
-
-    /* =====================================================
-       SECTION TITLES
-       ===================================================== */
 
     .section-title {
-        font-size: 28px;
-        font-weight: 750;
-        color: #111827;
 
-        margin-top: 30px;
-        margin-bottom: 18px;
+        font-size: 25px;
 
-        line-height: 1.25;
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 640px) {
+
+    .block-container {
+
+        max-width: 100% !important;
+
+        padding-top: 0.8rem !important;
+
+        padding-bottom: 2rem !important;
+
+        padding-left: 0.75rem !important;
+
+        padding-right: 0.75rem !important;
     }
 
 
-    /* =====================================================
-       SKILL BADGES
-       ===================================================== */
+    /* ---------------- HERO ---------------- */
 
-    .skill-badge {
-        display: inline-block;
+    .hero {
 
-        background: #dbeafe;
+        padding: 25px 18px !important;
 
-        color: #1e3a8a;
+        border-radius: 17px !important;
 
-        padding: 8px 14px;
+        margin-bottom: 18px !important;
 
-        border-radius: 30px;
-
-        margin: 4px;
-
-        font-size: 14px;
-
-        font-weight: 600;
-
-        border: 1px solid #bfdbfe;
-
-        max-width: 100%;
-
-        overflow-wrap: anywhere;
+        width: 100% !important;
     }
 
-    .missing-badge {
-        display: inline-block;
+    .hero h1 {
 
-        background: #fee2e2;
+        font-size: 27px !important;
 
-        color: #991b1b;
+        line-height: 1.2 !important;
 
-        padding: 8px 14px;
+        margin-bottom: 10px !important;
 
-        border-radius: 30px;
+    }
 
-        margin: 4px;
+    .hero p {
 
-        font-size: 14px;
+        font-size: 14px !important;
 
-        font-weight: 600;
+        line-height: 1.55 !important;
 
-        border: 1px solid #fecaca;
-
-        max-width: 100%;
-
-        overflow-wrap: anywhere;
     }
 
 
-    /* =====================================================
-       SCORE CARDS
-       ===================================================== */
+    /* ---------------- CARDS ---------------- */
+
+    .info-card {
+
+        padding: 16px !important;
+
+        border-radius: 15px !important;
+
+        margin-bottom: 14px !important;
+
+    }
+
+
+    /* ---------------- SECTION TITLES ---------------- */
+
+    .section-title {
+
+        font-size: 22px !important;
+
+        margin-top: 22px !important;
+
+        margin-bottom: 12px !important;
+
+    }
+
+
+    /* ---------------- SCORE CARDS ---------------- */
 
     .score-box {
-        text-align: center;
 
-        background: white;
+        padding: 18px 10px !important;
 
-        padding: 25px;
+        min-height: 95px !important;
 
-        border-radius: 18px;
+        margin-bottom: 10px !important;
 
-        border: 1px solid #e5e7eb;
-
-        box-shadow:
-            0 8px 25px
-            rgba(15, 23, 42, 0.06);
-
-        min-height: 115px;
-
-        display: flex;
-
-        flex-direction: column;
-
-        justify-content: center;
     }
 
     .score-number {
-        font-size: 42px;
 
-        font-weight: 800;
+        font-size: 32px !important;
 
-        color: #1d4ed8;
-
-        line-height: 1.1;
     }
 
     .score-label {
-        font-size: 14px;
 
-        color: #64748b;
+        font-size: 11px !important;
 
-        font-weight: 600;
+        margin-top: 6px !important;
 
-        margin-top: 8px;
     }
 
 
-    /* =====================================================
-       UPLOAD AREA
-       ===================================================== */
+    /* ---------------- SKILLS ---------------- */
 
-    [data-testid="stFileUploader"] {
+    .skill-badge {
 
-        background: white;
+        font-size: 12px !important;
 
-        border-radius: 16px;
+        padding: 7px 10px !important;
 
-        padding: 10px;
+        margin: 3px !important;
 
-        border: 1px solid #e5e7eb;
+    }
 
-        width: 100%;
+    .missing-badge {
+
+        font-size: 12px !important;
+
+        padding: 7px 10px !important;
+
+        margin: 3px !important;
+
     }
 
 
-    /* =====================================================
-       BUTTON
-       ===================================================== */
+    /* ---------------- BUTTON ---------------- */
 
     .stButton > button {
 
-        width: 100%;
+        font-size: 15px !important;
 
-        border-radius: 12px;
+        padding: 10px 12px !important;
 
-        padding: 12px 20px;
+        min-height: 46px !important;
 
-        font-size: 16px;
-
-        font-weight: 700;
-
-        border: none;
-
-        background:
-            linear-gradient(
-                135deg,
-                #2563eb,
-                #4f46e5
-            );
-
-        color: white;
-
-        transition: 0.2s;
-    }
-
-    .stButton > button:hover {
-
-        transform: translateY(-2px);
-
-        box-shadow:
-            0 8px 20px
-            rgba(37, 99, 235, 0.25);
     }
 
 
-    /* =====================================================
-       SIDEBAR
-       ===================================================== */
+    /* ---------------- STREAMLIT ALERTS ---------------- */
+
+    [data-testid="stAlert"] {
+
+        font-size: 13px !important;
+
+    }
+
+
+    /* ---------------- TEXT ---------------- */
+
+    p {
+
+        overflow-wrap: anywhere !important;
+
+        word-break: break-word !important;
+
+    }
+
+    .stMarkdown {
+
+        overflow-wrap: anywhere !important;
+
+        word-break: break-word !important;
+
+    }
+
+
+    /* ---------------- HEADINGS ---------------- */
+
+    h1 {
+
+        font-size: 27px !important;
+
+    }
+
+    h2 {
+
+        font-size: 22px !important;
+
+    }
+
+    h3 {
+
+        font-size: 18px !important;
+
+    }
+
+
+    /* ---------------- UPLOADER ---------------- */
+
+    [data-testid="stFileUploader"] {
+
+        padding: 6px !important;
+
+        border-radius: 13px !important;
+
+    }
+
+
+    /* ---------------- SIDEBAR TEXT ---------------- */
 
     [data-testid="stSidebar"] {
 
-        background: #ffffff;
-
-        border-right:
-            1px solid #e5e7eb;
-    }
-
-
-    /* =====================================================
-       TABLET
-       ===================================================== */
-
-    @media (max-width: 900px) {
-
-        .block-container {
-
-            padding-left: 1.2rem;
-            padding-right: 1.2rem;
-
-        }
-
-        .hero {
-
-            padding: 35px 30px;
-
-        }
-
-        .hero h1 {
-
-            font-size: 36px;
-
-        }
-
-        .hero p {
-
-            font-size: 17px;
-
-        }
-
-        .section-title {
-
-            font-size: 25px;
-
-        }
+        font-size: 14px;
 
     }
 
+}
 
-    /* =====================================================
-       MOBILE
-       ===================================================== */
 
-    @media (max-width: 640px) {
+/* ============================================================
+   VERY SMALL PHONES
+   ============================================================ */
 
-        .block-container {
+@media (max-width: 380px) {
 
-            padding-top: 1rem;
+    .block-container {
 
-            padding-bottom: 2rem;
+        padding-left: 0.55rem !important;
 
-            padding-left: 0.8rem;
-
-            padding-right: 0.8rem;
-
-        }
-
-
-        /* Hero */
-
-        .hero {
-
-            padding: 28px 20px;
-
-            border-radius: 18px;
-
-            margin-bottom: 20px;
-
-        }
-
-        .hero h1 {
-
-            font-size: 29px;
-
-            line-height: 1.2;
-
-            margin-bottom: 10px;
-
-        }
-
-        .hero p {
-
-            font-size: 15px;
-
-            line-height: 1.5;
-
-        }
-
-
-        /* Cards */
-
-        .info-card {
-
-            padding: 17px;
-
-            border-radius: 15px;
-
-            margin-bottom: 15px;
-
-        }
-
-
-        /* Titles */
-
-        .section-title {
-
-            font-size: 23px;
-
-            margin-top: 22px;
-
-            margin-bottom: 13px;
-
-        }
-
-
-        /* Score */
-
-        .score-box {
-
-            padding: 20px 12px;
-
-            min-height: 100px;
-
-            margin-bottom: 10px;
-
-        }
-
-        .score-number {
-
-            font-size: 34px;
-
-        }
-
-        .score-label {
-
-            font-size: 12px;
-
-        }
-
-
-        /* Skills */
-
-        .skill-badge,
-        .missing-badge {
-
-            font-size: 13px;
-
-            padding: 7px 11px;
-
-            margin: 3px;
-
-        }
-
-
-        /* Streamlit messages */
-
-        [data-testid="stAlert"] {
-
-            font-size: 14px;
-
-        }
-
-
-        /* Button */
-
-        .stButton > button {
-
-            font-size: 15px;
-
-            padding: 11px 14px;
-
-        }
-
-
-        /* Headings */
-
-        h1 {
-
-            font-size: 28px !important;
-
-        }
-
-        h2 {
-
-            font-size: 23px !important;
-
-        }
-
-        h3 {
-
-            font-size: 19px !important;
-
-        }
-
-
-        /* Prevent horizontal overflow */
-
-        .stMarkdown,
-
-        .stText,
-
-        p,
-
-        div {
-
-            overflow-wrap: anywhere;
-
-        }
+        padding-right: 0.55rem !important;
 
     }
 
-    </style>
-    """,
+    .hero {
+
+        padding: 22px 15px !important;
+
+    }
+
+    .hero h1 {
+
+        font-size: 24px !important;
+
+    }
+
+    .hero p {
+
+        font-size: 13px !important;
+
+    }
+
+    .score-number {
+
+        font-size: 29px !important;
+
+    }
+
+    .score-label {
+
+        font-size: 10px !important;
+
+    }
+
+}
+
+</style>
+""",
     unsafe_allow_html=True
 )
 
 
 # ============================================================
 # HERO SECTION
+# IMPORTANT: SINGLE-LINE HTML TO AVOID RAW TAG DISPLAY
 # ============================================================
 
 st.markdown(
-    """
-    <div class="hero">
-
-        <h1>🚀 AI Resume & Career Advisor</h1>
-
-        <p>
-            Analyze your resume, discover skill gaps,
-            identify suitable career opportunities and
-            get an AI-powered personalized learning roadmap.
-        </p>
-
-    </div>
-    """,
+    '<div class="hero">'
+    '<h1>🚀 AI Resume &amp; Career Advisor</h1>'
+    '<p>Analyze your resume, discover skill gaps, identify suitable career opportunities and get an AI-powered personalized learning roadmap.</p>'
+    '</div>',
     unsafe_allow_html=True
 )
 
@@ -637,20 +745,13 @@ with st.sidebar:
 if uploaded_file is None:
 
     st.markdown(
-        """
-        <div class="info-card">
-
-        <h2>📄 Start Your Career Analysis</h2>
-
-        <p>
-        Upload your resume using the sidebar.
-        Our AI system will analyze your skills,
-        compare them with job requirements and
-        generate personalized career advice.
-        </p>
-
-        </div>
-        """,
+        '<div class="info-card">'
+        '<h2>📄 Start Your Career Analysis</h2>'
+        '<p>Upload your resume using the sidebar. '
+        'Our AI system will analyze your skills, '
+        'compare them with job requirements and '
+        'generate personalized career advice.</p>'
+        '</div>',
         unsafe_allow_html=True
     )
 
@@ -1053,18 +1154,10 @@ if "resume" in st.session_state:
     # ========================================================
 
     st.markdown(
-        f"""
-        <div class="info-card">
-
-            <h1>👋 Hello, {resume.name}</h1>
-
-            <p>
-                Here's your AI-powered resume and
-                career analysis.
-            </p>
-
-        </div>
-        """,
+        f'<div class="info-card">'
+        f'<h1>👋 Hello, {resume.name}</h1>'
+        f'<p>Here\'s your AI-powered resume and career analysis.</p>'
+        f'</div>',
         unsafe_allow_html=True
     )
 
@@ -1090,19 +1183,10 @@ if "resume" in st.session_state:
         )
 
         st.markdown(
-            f"""
-            <div class="score-box">
-
-                <div class="score-number">
-                    {match}%
-                </div>
-
-                <div class="score-label">
-                    JOB MATCH
-                </div>
-
-            </div>
-            """,
+            f'<div class="score-box">'
+            f'<div class="score-number">{match}%</div>'
+            f'<div class="score-label">JOB MATCH</div>'
+            f'</div>',
             unsafe_allow_html=True
         )
 
@@ -1117,19 +1201,10 @@ if "resume" in st.session_state:
         )
 
         st.markdown(
-            f"""
-            <div class="score-box">
-
-                <div class="score-number">
-                    {matching_count}
-                </div>
-
-                <div class="score-label">
-                    MATCHING SKILLS
-                </div>
-
-            </div>
-            """,
+            f'<div class="score-box">'
+            f'<div class="score-number">{matching_count}</div>'
+            f'<div class="score-label">MATCHING SKILLS</div>'
+            f'</div>',
             unsafe_allow_html=True
         )
 
@@ -1144,19 +1219,10 @@ if "resume" in st.session_state:
         )
 
         st.markdown(
-            f"""
-            <div class="score-box">
-
-                <div class="score-number">
-                    {missing_count}
-                </div>
-
-                <div class="score-label">
-                    SKILLS TO LEARN
-                </div>
-
-            </div>
-            """,
+            f'<div class="score-box">'
+            f'<div class="score-number">{missing_count}</div>'
+            f'<div class="score-label">SKILLS TO LEARN</div>'
+            f'</div>',
             unsafe_allow_html=True
         )
 
@@ -1184,11 +1250,7 @@ if "resume" in st.session_state:
 
 
     st.markdown(
-        f"""
-        <div class="info-card">
-            {skills_html}
-        </div>
-        """,
+        f'<div class="info-card">{skills_html}</div>',
         unsafe_allow_html=True
     )
 
@@ -1222,11 +1284,9 @@ if "resume" in st.session_state:
             for skill in matching_skills:
 
                 st.markdown(
-                    f"""
-                    <span class="skill-badge">
-                    ✓ {skill}
-                    </span>
-                    """,
+                    f'<span class="skill-badge">'
+                    f'✓ {skill}'
+                    f'</span>',
                     unsafe_allow_html=True
                 )
 
@@ -1253,11 +1313,9 @@ if "resume" in st.session_state:
             for skill in missing_skills:
 
                 st.markdown(
-                    f"""
-                    <span class="missing-badge">
-                    {skill}
-                    </span>
-                    """,
+                    f'<span class="missing-badge">'
+                    f'{skill}'
+                    f'</span>',
                     unsafe_allow_html=True
                 )
 
@@ -1278,17 +1336,13 @@ if "resume" in st.session_state:
     )
 
 
+    feedback = gap.get(
+        "overall_feedback",
+        "No feedback available."
+    )
+
     st.markdown(
-        f"""
-        <div class="info-card">
-
-        {gap.get(
-            "overall_feedback",
-            "No feedback available."
-        )}
-
-        </div>
-        """,
+        f'<div class="info-card">{feedback}</div>',
         unsafe_allow_html=True
     )
 
@@ -1335,13 +1389,7 @@ if "resume" in st.session_state:
 
 
     st.markdown(
-        f"""
-        <div class="info-card">
-
-        {career_advice}
-
-        </div>
-        """,
+        f'<div class="info-card">{career_advice}</div>',
         unsafe_allow_html=True
     )
 
