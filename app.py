@@ -54,13 +54,17 @@ st.set_page_config(
 
 # ============================================================
 # CUSTOM CSS
+# DESKTOP + MOBILE RESPONSIVE
 # ============================================================
 
 st.markdown(
     """
     <style>
 
-    /* Main background */
+    /* =====================================================
+       GLOBAL
+       ===================================================== */
+
     .stApp {
         background:
             linear-gradient(
@@ -71,7 +75,6 @@ st.markdown(
             );
     }
 
-    /* Hide Streamlit default menu */
     #MainMenu {
         visibility: hidden;
     }
@@ -84,14 +87,19 @@ st.markdown(
         visibility: hidden;
     }
 
-    /* Main content */
     .block-container {
         max-width: 1200px;
         padding-top: 2rem;
         padding-bottom: 4rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
     }
 
-    /* Hero */
+
+    /* =====================================================
+       HERO
+       ===================================================== */
+
     .hero {
         background:
             linear-gradient(
@@ -116,6 +124,7 @@ st.markdown(
         font-size: 44px;
         font-weight: 800;
         margin-bottom: 12px;
+        line-height: 1.15;
     }
 
     .hero p {
@@ -125,9 +134,14 @@ st.markdown(
         margin-bottom: 0;
     }
 
-    /* Cards */
+
+    /* =====================================================
+       CARDS
+       ===================================================== */
+
     .info-card {
         background: white;
+
         padding: 24px;
 
         border-radius: 18px;
@@ -139,18 +153,32 @@ st.markdown(
             rgba(15, 23, 42, 0.06);
 
         margin-bottom: 20px;
+
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
 
-    /* Section title */
+
+    /* =====================================================
+       SECTION TITLES
+       ===================================================== */
+
     .section-title {
         font-size: 28px;
         font-weight: 750;
         color: #111827;
+
         margin-top: 30px;
         margin-bottom: 18px;
+
+        line-height: 1.25;
     }
 
-    /* Skill badges */
+
+    /* =====================================================
+       SKILL BADGES
+       ===================================================== */
+
     .skill-badge {
         display: inline-block;
 
@@ -169,6 +197,10 @@ st.markdown(
         font-weight: 600;
 
         border: 1px solid #bfdbfe;
+
+        max-width: 100%;
+
+        overflow-wrap: anywhere;
     }
 
     .missing-badge {
@@ -189,9 +221,17 @@ st.markdown(
         font-weight: 600;
 
         border: 1px solid #fecaca;
+
+        max-width: 100%;
+
+        overflow-wrap: anywhere;
     }
 
-    /* Score */
+
+    /* =====================================================
+       SCORE CARDS
+       ===================================================== */
+
     .score-box {
         text-align: center;
 
@@ -206,6 +246,14 @@ st.markdown(
         box-shadow:
             0 8px 25px
             rgba(15, 23, 42, 0.06);
+
+        min-height: 115px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: center;
     }
 
     .score-number {
@@ -214,6 +262,8 @@ st.markdown(
         font-weight: 800;
 
         color: #1d4ed8;
+
+        line-height: 1.1;
     }
 
     .score-label {
@@ -222,10 +272,17 @@ st.markdown(
         color: #64748b;
 
         font-weight: 600;
+
+        margin-top: 8px;
     }
 
-    /* Upload area */
+
+    /* =====================================================
+       UPLOAD AREA
+       ===================================================== */
+
     [data-testid="stFileUploader"] {
+
         background: white;
 
         border-radius: 16px;
@@ -233,9 +290,15 @@ st.markdown(
         padding: 10px;
 
         border: 1px solid #e5e7eb;
+
+        width: 100%;
     }
 
-    /* Button */
+
+    /* =====================================================
+       BUTTON
+       ===================================================== */
+
     .stButton > button {
 
         width: 100%;
@@ -271,13 +334,230 @@ st.markdown(
             rgba(37, 99, 235, 0.25);
     }
 
-    /* Sidebar */
+
+    /* =====================================================
+       SIDEBAR
+       ===================================================== */
+
     [data-testid="stSidebar"] {
 
         background: #ffffff;
 
         border-right:
             1px solid #e5e7eb;
+    }
+
+
+    /* =====================================================
+       TABLET
+       ===================================================== */
+
+    @media (max-width: 900px) {
+
+        .block-container {
+
+            padding-left: 1.2rem;
+            padding-right: 1.2rem;
+
+        }
+
+        .hero {
+
+            padding: 35px 30px;
+
+        }
+
+        .hero h1 {
+
+            font-size: 36px;
+
+        }
+
+        .hero p {
+
+            font-size: 17px;
+
+        }
+
+        .section-title {
+
+            font-size: 25px;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       MOBILE
+       ===================================================== */
+
+    @media (max-width: 640px) {
+
+        .block-container {
+
+            padding-top: 1rem;
+
+            padding-bottom: 2rem;
+
+            padding-left: 0.8rem;
+
+            padding-right: 0.8rem;
+
+        }
+
+
+        /* Hero */
+
+        .hero {
+
+            padding: 28px 20px;
+
+            border-radius: 18px;
+
+            margin-bottom: 20px;
+
+        }
+
+        .hero h1 {
+
+            font-size: 29px;
+
+            line-height: 1.2;
+
+            margin-bottom: 10px;
+
+        }
+
+        .hero p {
+
+            font-size: 15px;
+
+            line-height: 1.5;
+
+        }
+
+
+        /* Cards */
+
+        .info-card {
+
+            padding: 17px;
+
+            border-radius: 15px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        /* Titles */
+
+        .section-title {
+
+            font-size: 23px;
+
+            margin-top: 22px;
+
+            margin-bottom: 13px;
+
+        }
+
+
+        /* Score */
+
+        .score-box {
+
+            padding: 20px 12px;
+
+            min-height: 100px;
+
+            margin-bottom: 10px;
+
+        }
+
+        .score-number {
+
+            font-size: 34px;
+
+        }
+
+        .score-label {
+
+            font-size: 12px;
+
+        }
+
+
+        /* Skills */
+
+        .skill-badge,
+        .missing-badge {
+
+            font-size: 13px;
+
+            padding: 7px 11px;
+
+            margin: 3px;
+
+        }
+
+
+        /* Streamlit messages */
+
+        [data-testid="stAlert"] {
+
+            font-size: 14px;
+
+        }
+
+
+        /* Button */
+
+        .stButton > button {
+
+            font-size: 15px;
+
+            padding: 11px 14px;
+
+        }
+
+
+        /* Headings */
+
+        h1 {
+
+            font-size: 28px !important;
+
+        }
+
+        h2 {
+
+            font-size: 23px !important;
+
+        }
+
+        h3 {
+
+            font-size: 19px !important;
+
+        }
+
+
+        /* Prevent horizontal overflow */
+
+        .stMarkdown,
+
+        .stText,
+
+        p,
+
+        div {
+
+            overflow-wrap: anywhere;
+
+        }
+
     }
 
     </style>
@@ -429,7 +709,7 @@ if uploaded_file:
         if not N8N_WEBHOOK_URL:
 
             st.error(
-                "N8N_WEBHOOK_URL is missing from .env"
+                "N8N_WEBHOOK_URL is missing."
             )
 
             st.stop()
