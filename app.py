@@ -83,10 +83,6 @@ footer {
     visibility: hidden;
 }
 
-header {
-    visibility: hidden;
-}
-
 .block-container {
     max-width: 1200px;
     padding-top: 2rem;
@@ -172,12 +168,6 @@ header {
     overflow-wrap: anywhere;
 
     word-break: break-word;
-}
-
-.info-card h1,
-.info-card h2,
-.info-card h3 {
-    overflow-wrap: anywhere;
 }
 
 
@@ -438,7 +428,7 @@ header {
     }
 
 
-    /* ---------------- HERO ---------------- */
+    /* HERO */
 
     .hero {
 
@@ -470,7 +460,7 @@ header {
     }
 
 
-    /* ---------------- CARDS ---------------- */
+    /* CARDS */
 
     .info-card {
 
@@ -483,7 +473,7 @@ header {
     }
 
 
-    /* ---------------- SECTION TITLES ---------------- */
+    /* SECTION TITLES */
 
     .section-title {
 
@@ -496,7 +486,7 @@ header {
     }
 
 
-    /* ---------------- SCORE CARDS ---------------- */
+    /* SCORE */
 
     .score-box {
 
@@ -523,18 +513,9 @@ header {
     }
 
 
-    /* ---------------- SKILLS ---------------- */
+    /* SKILLS */
 
-    .skill-badge {
-
-        font-size: 12px !important;
-
-        padding: 7px 10px !important;
-
-        margin: 3px !important;
-
-    }
-
+    .skill-badge,
     .missing-badge {
 
         font-size: 12px !important;
@@ -546,7 +527,7 @@ header {
     }
 
 
-    /* ---------------- BUTTON ---------------- */
+    /* BUTTON */
 
     .stButton > button {
 
@@ -559,7 +540,7 @@ header {
     }
 
 
-    /* ---------------- STREAMLIT ALERTS ---------------- */
+    /* ALERTS */
 
     [data-testid="stAlert"] {
 
@@ -568,7 +549,7 @@ header {
     }
 
 
-    /* ---------------- TEXT ---------------- */
+    /* TEXT */
 
     p {
 
@@ -587,7 +568,7 @@ header {
     }
 
 
-    /* ---------------- HEADINGS ---------------- */
+    /* HEADINGS */
 
     h1 {
 
@@ -608,22 +589,13 @@ header {
     }
 
 
-    /* ---------------- UPLOADER ---------------- */
+    /* UPLOADER */
 
     [data-testid="stFileUploader"] {
 
         padding: 6px !important;
 
         border-radius: 13px !important;
-
-    }
-
-
-    /* ---------------- SIDEBAR TEXT ---------------- */
-
-    [data-testid="stSidebar"] {
-
-        font-size: 14px;
 
     }
 
@@ -684,7 +656,6 @@ header {
 
 # ============================================================
 # HERO SECTION
-# IMPORTANT: SINGLE-LINE HTML TO AVOID RAW TAG DISPLAY
 # ============================================================
 
 st.markdown(
