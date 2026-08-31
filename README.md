@@ -1,87 +1,72 @@
-# AI Resume & Career Advisor
+# 🚀 AI Resume & Career Advisor
 
-## 📌 Project Description
+AI-powered Resume & Career Advisor that analyzes resumes, identifies skill gaps, matches candidates with relevant job roles, and provides personalized career guidance.
 
-AI Resume & Career Advisor is a Generative AI based system that analyzes a candidate's resume and provides personalized career guidance.
+## 🌐 Live Demo
 
-The system extracts information from a resume, identifies the candidate's skills, retrieves relevant job descriptions using Retrieval-Augmented Generation (RAG), performs skill gap analysis, and generates personalized career recommendations using an AI Agent.
+👉 **[Open AI Resume & Career Advisor](https://ai-resume-career-advisor.streamlit.app/)**
 
-The system also provides interview preparation and a personalized 3-month learning roadmap.
+## 📂 GitHub Repository
 
----
+👉 **[View Source Code](https://github.com/S4CHIN-30/AI-Resume-Career-Advisor)**
 
 ## ✨ Features
 
-- 📄 Resume PDF Analysis
+- 📄 Resume PDF Upload
 - 🧠 AI-powered Resume Analysis
-- 🔎 RAG-based Job Description Retrieval
-- 🎯 Skill Gap Analysis
 - 📊 Resume-to-Job Match Score
-- ✅ Matching Skills Identification
-- ❌ Missing Skills Identification
+- 🎯 Skill Gap Analysis
+- 💻 Matching & Missing Skills
+- 🔎 Job Description Retrieval using RAG
+- ⚡ FAISS Vector Search
 - 🤖 AI Career Advisor
-- 🎤 Interview Preparation
-- 📚 Personalized 3-Month Learning Roadmap
-- 🖥️ Interactive Streamlit Interface
-- 🔗 n8n AI Agent Integration
+- 💡 Personalized Recommendations
+- 🗺️ Career & Learning Roadmap
+- 📱 Responsive UI for Desktop and Mobile
 
----
+## 🛠️ Tech Stack
 
-## 🛠️ Technology Stack
-
-### Frontend
-- Streamlit
-
-### Backend
 - Python
-
-### AI / LLM
+- Streamlit
 - Groq
 - GPT-OSS-120B
 - LangChain
-
-### RAG
+- RAG
 - FAISS
-- LangChain
-- Job Description PDFs
-
-### AI Agent & Automation
 - n8n
-- n8n AI Agent
+- PyPDF
+- Requests
 
-### Development Tools
-- VS Code
-- Git
-- GitHub
+## 🔄 How It Works
 
----
+1. Upload your resume PDF.
+2. Select your target job role.
+3. Resume text is extracted.
+4. AI analyzes your resume.
+5. RAG + FAISS retrieves a relevant job description.
+6. The system compares your skills with job requirements.
+7. Skill gaps are identified.
+8. n8n AI Agent generates personalized career advice.
+9. Results are displayed through the Streamlit interface.
 
-## 🏗️ System Workflow
+## 📁 Project Structure
 
 ```text
-Resume PDF
-    ↓
-PDF Text Extraction
-    ↓
-Resume Analyzer
-    ↓
-Candidate Skills & Information
-    ↓
-RAG + FAISS
-    ↓
-Relevant Job Description
-    ↓
-Skill Gap Analysis
-    ↓
-n8n Webhook
-    ↓
-AI Career Advisor Agent
-    ↓
-GPT-OSS-120B
-    ↓
-Career Advice
-    ↓
-Resume Feedback
-Skill Gap
-Interview Preparation
-3-Month Learning Roadmap
+AI-Resume-Career-Advisor/
+│
+├── app.py
+├── requirements.txt
+├── README.md
+├── .gitignore
+│
+├── data/
+│   └── job_descriptions/
+│
+├── src/
+│   ├── pdf_reader.py
+│   ├── resume_analyzer.py
+│   ├── rag.py
+│   ├── skill_gap.py
+│
+└── vectorstore/
+    └── job_descriptions/
