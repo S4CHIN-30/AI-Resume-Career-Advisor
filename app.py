@@ -54,7 +54,6 @@ st.set_page_config(
 
 # ============================================================
 # CUSTOM CSS
-# DESKTOP + TABLET + MOBILE
 # ============================================================
 
 st.markdown(
@@ -123,23 +122,16 @@ footer {
 
 .hero h1 {
     color: #ffffff !important;
-
     font-size: 44px !important;
-
     font-weight: 800 !important;
-
     margin: 0 0 12px 0 !important;
-
     line-height: 1.15 !important;
 }
 
 .hero p {
     color: #dbeafe !important;
-
     font-size: 18px !important;
-
     line-height: 1.6 !important;
-
     margin: 0 !important;
 }
 
@@ -163,11 +155,48 @@ footer {
 
     margin-bottom: 20px;
 
-    overflow: hidden;
-
     overflow-wrap: anywhere;
 
     word-break: break-word;
+}
+
+
+/* ============================================================
+   UPLOAD CARD
+   ============================================================ */
+
+.upload-card {
+    background: #ffffff;
+
+    padding: 28px;
+
+    border-radius: 20px;
+
+    border: 1px solid #e5e7eb;
+
+    box-shadow:
+        0 8px 25px
+        rgba(15, 23, 42, 0.06);
+
+    margin-bottom: 25px;
+}
+
+.upload-title {
+    font-size: 27px;
+
+    font-weight: 750;
+
+    color: #111827;
+
+    margin-bottom: 8px;
+}
+
+.upload-description {
+    color: #64748b;
+
+    font-size: 15px;
+
+    margin-bottom: 20px;
 }
 
 
@@ -299,13 +328,14 @@ footer {
    ============================================================ */
 
 [data-testid="stFileUploader"] {
-    background: #ffffff;
+
+    background: #f8fafc;
 
     border-radius: 16px;
 
-    padding: 10px;
+    padding: 12px;
 
-    border: 1px solid #e5e7eb;
+    border: 2px dashed #bfdbfe;
 
     width: 100%;
 }
@@ -321,7 +351,7 @@ footer {
 
     border-radius: 12px;
 
-    padding: 12px 20px;
+    padding: 13px 20px;
 
     font-size: 16px;
 
@@ -399,6 +429,12 @@ footer {
 
     }
 
+    .upload-card {
+
+        padding: 23px;
+
+    }
+
     .section-title {
 
         font-size: 25px;
@@ -438,7 +474,6 @@ footer {
 
         margin-bottom: 18px !important;
 
-        width: 100% !important;
     }
 
     .hero h1 {
@@ -460,7 +495,33 @@ footer {
     }
 
 
-    /* CARDS */
+    /* UPLOAD CARD */
+
+    .upload-card {
+
+        padding: 17px !important;
+
+        border-radius: 16px !important;
+
+        margin-bottom: 18px !important;
+    }
+
+    .upload-title {
+
+        font-size: 22px !important;
+
+    }
+
+    .upload-description {
+
+        font-size: 13px !important;
+
+        line-height: 1.5 !important;
+
+    }
+
+
+    /* INFO CARDS */
 
     .info-card {
 
@@ -540,6 +601,17 @@ footer {
     }
 
 
+    /* UPLOADER */
+
+    [data-testid="stFileUploader"] {
+
+        padding: 7px !important;
+
+        border-radius: 13px !important;
+
+    }
+
+
     /* ALERTS */
 
     [data-testid="stAlert"] {
@@ -588,17 +660,6 @@ footer {
 
     }
 
-
-    /* UPLOADER */
-
-    [data-testid="stFileUploader"] {
-
-        padding: 6px !important;
-
-        border-radius: 13px !important;
-
-    }
-
 }
 
 
@@ -631,6 +692,12 @@ footer {
     .hero p {
 
         font-size: 13px !important;
+
+    }
+
+    .upload-title {
+
+        font-size: 20px !important;
 
     }
 
@@ -668,45 +735,58 @@ st.markdown(
 
 
 # ============================================================
-# SIDEBAR
+# MAIN UPLOAD SECTION
 # ============================================================
 
-with st.sidebar:
+st.markdown(
+    '<div class="upload-card">'
+    '<div class="upload-title">📄 Upload Your Resume</div>'
+    '<div class="upload-description">'
+    'Upload your resume PDF and select the job role you want to target.'
+    '</div>'
+    '</div>',
+    unsafe_allow_html=True
+)
 
-    st.markdown(
-        "## ⚙️ Resume Analysis"
+
+uploaded_file = st.file_uploader(
+    "📄 Choose your resume PDF",
+    type=["pdf"],
+    help="Upload a PDF version of your resume."
+)
+
+
+target_role = st.selectbox(
+    "🎯 Target Job Role",
+    [
+        "Automatic",
+        "Python Developer",
+        "Data Analyst",
+        "AI / ML Engineer",
+        "Software Developer",
+        "Full Stack Web Developer"
+    ]
+)
+
+
+# ============================================================
+# ANALYZE BUTTON
+# ============================================================
+
+if uploaded_file:
+
+    st.success(
+        f"✅ Resume uploaded: {uploaded_file.name}"
     )
 
-    st.write(
-        "Upload your resume PDF and select your target role."
+    analyze_button = st.button(
+        "🚀 Analyze My Resume",
+        use_container_width=True
     )
 
-    st.divider()
+else:
 
-    uploaded_file = st.file_uploader(
-        "📄 Upload Resume",
-        type=["pdf"],
-        help="Upload a PDF version of your resume."
-    )
-
-    target_role = st.selectbox(
-        "🎯 Target Job Role",
-        [
-            "Automatic",
-            "Python Developer",
-            "Data Analyst",
-            "AI / ML Engineer",
-            "Software Developer",
-            "Full Stack Web Developer"
-        ]
-    )
-
-    st.divider()
-
-    st.caption(
-        "Powered by Python • RAG • FAISS • "
-        "n8n • Groq GPT-OSS-120B"
-    )
+    analyze_button = False
 
 
 # ============================================================
@@ -717,11 +797,12 @@ if uploaded_file is None:
 
     st.markdown(
         '<div class="info-card">'
-        '<h2>📄 Start Your Career Analysis</h2>'
-        '<p>Upload your resume using the sidebar. '
-        'Our AI system will analyze your skills, '
-        'compare them with job requirements and '
-        'generate personalized career advice.</p>'
+        '<h2>🎯 What You Will Get</h2>'
+        '<p>'
+        'Our AI system will analyze your resume, compare your '
+        'skills with relevant job requirements and generate '
+        'personalized career guidance.'
+        '</p>'
         '</div>',
         unsafe_allow_html=True
     )
@@ -754,347 +835,328 @@ if uploaded_file is None:
 
 
 # ============================================================
-# UPLOAD SUCCESS
+# ANALYSIS
 # ============================================================
 
-if uploaded_file:
+if analyze_button:
 
-    st.success(
-        f"✅ Resume uploaded: {uploaded_file.name}"
-    )
+    if not N8N_WEBHOOK_URL:
 
-    st.markdown(
-        "### Ready to analyze?"
-    )
+        st.error(
+            "N8N_WEBHOOK_URL is missing."
+        )
 
-    analyze_button = st.button(
-        "🚀 Analyze My Resume"
-    )
+        st.stop()
 
 
-    # ========================================================
-    # ANALYSIS
-    # ========================================================
+    temp_path = None
 
-    if analyze_button:
 
-        if not N8N_WEBHOOK_URL:
+    try:
 
-            st.error(
-                "N8N_WEBHOOK_URL is missing."
+        # ----------------------------------------------------
+        # PROGRESS
+        # ----------------------------------------------------
+
+        progress = st.progress(0)
+
+        status = st.empty()
+
+
+        # ----------------------------------------------------
+        # SAVE PDF
+        # ----------------------------------------------------
+
+        status.info(
+            "📄 Reading your resume..."
+        )
+
+        with tempfile.NamedTemporaryFile(
+            delete=False,
+            suffix=".pdf"
+        ) as temp_file:
+
+            temp_file.write(
+                uploaded_file.getvalue()
             )
 
-            st.stop()
+            temp_path = temp_file.name
 
 
-        temp_path = None
+        progress.progress(15)
 
 
-        try:
+        # ----------------------------------------------------
+        # EXTRACT TEXT
+        # ----------------------------------------------------
 
-            # ------------------------------------------------
-            # PROGRESS
-            # ------------------------------------------------
+        status.info(
+            "🔍 Extracting resume information..."
+        )
 
-            progress = st.progress(0)
+        resume_text = extract_text_from_pdf(
+            temp_path
+        )
 
-            status = st.empty()
+        progress.progress(30)
 
 
-            # ------------------------------------------------
-            # SAVE PDF
-            # ------------------------------------------------
+        # ----------------------------------------------------
+        # RESUME ANALYSIS
+        # ----------------------------------------------------
 
-            status.info(
-                "📄 Reading your resume..."
+        status.info(
+            "🧠 AI is analyzing your resume..."
+        )
+
+        resume_data = analyze_resume(
+            resume_text
+        )
+
+        progress.progress(45)
+
+
+        # ----------------------------------------------------
+        # RAG SEARCH
+        # ----------------------------------------------------
+
+        status.info(
+            "🔎 Finding the most relevant job description..."
+        )
+
+
+        if target_role == "Automatic":
+
+            query = f"""
+            Candidate skills:
+            {", ".join(resume_data.skills)}
+
+            Find the most suitable job role
+            for this candidate.
+            """
+
+        else:
+
+            query = f"""
+            Target job role:
+            {target_role}
+
+            Candidate skills:
+            {", ".join(resume_data.skills)}
+            """
+
+
+        results = search_jobs(
+            query,
+            k=1
+        )
+
+
+        if results:
+
+            job_description = (
+                results[0].page_content
             )
 
-            with tempfile.NamedTemporaryFile(
-                delete=False,
-                suffix=".pdf"
-            ) as temp_file:
-
-                temp_file.write(
-                    uploaded_file.getvalue()
+            job_source = (
+                results[0]
+                .metadata
+                .get(
+                    "source",
+                    "Unknown"
                 )
-
-                temp_path = temp_file.name
-
-
-            progress.progress(15)
-
-
-            # ------------------------------------------------
-            # EXTRACT TEXT
-            # ------------------------------------------------
-
-            status.info(
-                "🔍 Extracting resume information..."
             )
 
-            resume_text = extract_text_from_pdf(
-                temp_path
-            )
+        else:
 
-            progress.progress(30)
+            job_description = ""
 
-
-            # ------------------------------------------------
-            # RESUME ANALYSIS
-            # ------------------------------------------------
-
-            status.info(
-                "🧠 AI is analyzing your resume..."
-            )
-
-            resume_data = analyze_resume(
-                resume_text
-            )
-
-            progress.progress(45)
+            job_source = "No job description found"
 
 
-            # ------------------------------------------------
-            # RAG SEARCH
-            # ------------------------------------------------
-
-            status.info(
-                "🔎 Finding the most relevant job description..."
-            )
+        progress.progress(60)
 
 
-            if target_role == "Automatic":
+        # ----------------------------------------------------
+        # SKILL GAP
+        # ----------------------------------------------------
 
-                query = f"""
-                Candidate skills:
-                {", ".join(resume_data.skills)}
+        status.info(
+            "🎯 Calculating your skill gap..."
+        )
 
-                Find the most suitable job role
-                for this candidate.
-                """
+        skill_gap = analyze_skill_gap(
+            resume_data,
+            job_description
+        )
 
-            else:
-
-                query = f"""
-                Target job role:
-                {target_role}
-
-                Candidate skills:
-                {", ".join(resume_data.skills)}
-                """
+        progress.progress(75)
 
 
-            results = search_jobs(
-                query,
-                k=1
-            )
+        # ----------------------------------------------------
+        # PREPARE N8N PAYLOAD
+        # ----------------------------------------------------
 
+        payload = {
 
-            if results:
+            "name": resume_data.name,
 
-                job_description = (
-                    results[0].page_content
-                )
+            "skills": resume_data.skills,
 
-                job_source = (
-                    results[0]
-                    .metadata
-                    .get(
-                        "source",
-                        "Unknown"
-                    )
-                )
+            "education": resume_data.education,
 
-            else:
+            "projects": [
 
-                job_description = ""
+                {
+                    "name": project.name,
+                    "description": project.description
+                }
 
-                job_source = "No job description found"
+                for project in resume_data.projects
 
+            ],
 
-            progress.progress(60)
+            "job_role": skill_gap.get(
+                "job_role",
+                target_role
+            ),
 
+            "match_percentage": skill_gap.get(
+                "match_percentage",
+                0
+            ),
 
-            # ------------------------------------------------
-            # SKILL GAP
-            # ------------------------------------------------
+            "matching_skills": skill_gap.get(
+                "matching_skills",
+                []
+            ),
 
-            status.info(
-                "🎯 Calculating your skill gap..."
-            )
+            "missing_skills": skill_gap.get(
+                "missing_skills",
+                []
+            ),
 
-            skill_gap = analyze_skill_gap(
-                resume_data,
+            "additional_recommendations":
+                skill_gap.get(
+                    "additional_recommendations",
+                    []
+                ),
+
+            "overall_feedback":
+                skill_gap.get(
+                    "overall_feedback",
+                    ""
+                ),
+
+            "job_description":
                 job_description
-            )
-
-            progress.progress(75)
+        }
 
 
-            # ------------------------------------------------
-            # PREPARE N8N PAYLOAD
-            # ------------------------------------------------
+        # ----------------------------------------------------
+        # SEND TO N8N
+        # ----------------------------------------------------
 
-            payload = {
-
-                "name": resume_data.name,
-
-                "skills": resume_data.skills,
-
-                "education": resume_data.education,
-
-                "projects": [
-
-                    {
-                        "name": project.name,
-                        "description": project.description
-                    }
-
-                    for project in resume_data.projects
-
-                ],
-
-                "job_role": skill_gap.get(
-                    "job_role",
-                    target_role
-                ),
-
-                "match_percentage": skill_gap.get(
-                    "match_percentage",
-                    0
-                ),
-
-                "matching_skills": skill_gap.get(
-                    "matching_skills",
-                    []
-                ),
-
-                "missing_skills": skill_gap.get(
-                    "missing_skills",
-                    []
-                ),
-
-                "additional_recommendations":
-                    skill_gap.get(
-                        "additional_recommendations",
-                        []
-                    ),
-
-                "overall_feedback":
-                    skill_gap.get(
-                        "overall_feedback",
-                        ""
-                    ),
-
-                "job_description":
-                    job_description
-            }
+        status.info(
+            "🤖 Career Advisor Agent is preparing your advice..."
+        )
 
 
-            # ------------------------------------------------
-            # SEND TO N8N
-            # ------------------------------------------------
+        n8n_response = requests.post(
 
-            status.info(
-                "🤖 Career Advisor Agent is preparing your advice..."
-            )
+            N8N_WEBHOOK_URL,
 
+            json=payload,
 
-            n8n_response = requests.post(
+            timeout=120
 
-                N8N_WEBHOOK_URL,
-
-                json=payload,
-
-                timeout=120
-
-            )
+        )
 
 
-            progress.progress(90)
+        progress.progress(90)
 
 
-            # ------------------------------------------------
-            # HANDLE N8N RESPONSE
-            # ------------------------------------------------
+        # ----------------------------------------------------
+        # HANDLE N8N RESPONSE
+        # ----------------------------------------------------
 
-            if n8n_response.status_code == 200:
+        if n8n_response.status_code == 200:
 
-                try:
+            try:
 
-                    n8n_data = (
-                        n8n_response.json()
-                    )
-
-                    career_advice = (
-                        n8n_data.get(
-                            "career_advice",
-                            ""
-                        )
-                    )
-
-                except Exception:
-
-                    career_advice = (
-                        n8n_response.text
-                    )
-
-            else:
+                n8n_data = (
+                    n8n_response.json()
+                )
 
                 career_advice = (
-                    "Career Advisor service "
-                    "returned an error."
+                    n8n_data.get(
+                        "career_advice",
+                        ""
+                    )
                 )
 
+            except Exception:
 
-            # ------------------------------------------------
-            # SAVE RESULTS
-            # ------------------------------------------------
+                career_advice = (
+                    n8n_response.text
+                )
 
-            st.session_state[
-                "resume"
-            ] = resume_data
+        else:
 
-            st.session_state[
-                "skill_gap"
-            ] = skill_gap
-
-            st.session_state[
-                "career_advice"
-            ] = career_advice
-
-            st.session_state[
-                "job_source"
-            ] = job_source
-
-
-            progress.progress(100)
-
-            status.success(
-                "✅ Analysis completed successfully!"
+            career_advice = (
+                "Career Advisor service "
+                "returned an error."
             )
 
 
-        except Exception as error:
+        # ----------------------------------------------------
+        # SAVE RESULTS
+        # ----------------------------------------------------
 
-            st.error(
-                "❌ Something went wrong during analysis."
-            )
+        st.session_state[
+            "resume"
+        ] = resume_data
 
-            st.exception(
-                error
-            )
+        st.session_state[
+            "skill_gap"
+        ] = skill_gap
+
+        st.session_state[
+            "career_advice"
+        ] = career_advice
+
+        st.session_state[
+            "job_source"
+        ] = job_source
 
 
-        finally:
+        progress.progress(100)
 
-            if temp_path and os.path.exists(
+        status.success(
+            "✅ Analysis completed successfully!"
+        )
+
+
+    except Exception as error:
+
+        st.error(
+            "❌ Something went wrong during analysis."
+        )
+
+        st.exception(
+            error
+        )
+
+
+    finally:
+
+        if temp_path and os.path.exists(
+            temp_path
+        ):
+
+            os.remove(
                 temp_path
-            ):
-
-                os.remove(
-                    temp_path
-                )
+            )
 
 
 # ============================================================
@@ -1311,6 +1373,7 @@ if "resume" in st.session_state:
         "overall_feedback",
         "No feedback available."
     )
+
 
     st.markdown(
         f'<div class="info-card">{feedback}</div>',
