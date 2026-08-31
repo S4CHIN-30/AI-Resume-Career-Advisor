@@ -1,0 +1,1075 @@
+import os
+import sys
+import tempfile
+import requests
+import streamlit as st
+
+# ============================================================
+# ADD SRC FOLDER TO PYTHON PATH
+# ============================================================
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SRC_DIR = os.path.join(BASE_DIR, "src")
+
+if SRC_DIR not in sys.path:
+    sys.path.insert(0, SRC_DIR)
+
+
+# ============================================================
+# IMPORT PROJECT MODULES
+# ============================================================
+
+from dotenv import load_dotenv
+
+from pdf_reader import extract_text_from_pdf
+from resume_analyzer import analyze_resume
+from rag import search_jobs
+from skill_gap import analyze_skill_gap
+
+
+# ============================================================
+# LOAD ENVIRONMENT
+# ============================================================
+
+load_dotenv(
+    os.path.join(BASE_DIR, ".env")
+)
+
+N8N_WEBHOOK_URL = os.getenv(
+    "N8N_WEBHOOK_URL"
+)
+
+
+# ============================================================
+# PAGE CONFIG
+# ============================================================
+
+st.set_page_config(
+    page_title="AI Resume & Career Advisor",
+    page_icon="🚀",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+
+# ============================================================
+# CUSTOM CSS
+# ============================================================
+
+st.markdown(
+    """
+    <style>
+
+    /* Main background */
+    .stApp {
+        background:
+            linear-gradient(
+                135deg,
+                #f8fafc 0%,
+                #eef2ff 50%,
+                #f8fafc 100%
+            );
+    }
+
+    /* Hide Streamlit default menu */
+    #MainMenu {
+        visibility: hidden;
+    }
+
+    footer {
+        visibility: hidden;
+    }
+
+    header {
+        visibility: hidden;
+    }
+
+    /* Main content */
+    .block-container {
+        max-width: 1200px;
+        padding-top: 2rem;
+        padding-bottom: 4rem;
+    }
+
+    /* Hero */
+    .hero {
+        background:
+            linear-gradient(
+                135deg,
+                #111827,
+                #1e3a8a
+            );
+
+        padding: 45px 50px;
+
+        border-radius: 24px;
+
+        margin-bottom: 30px;
+
+        box-shadow:
+            0 15px 40px
+            rgba(30, 58, 138, 0.20);
+    }
+
+    .hero h1 {
+        color: white;
+        font-size: 44px;
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+
+    .hero p {
+        color: #dbeafe;
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+
+    /* Cards */
+    .info-card {
+        background: white;
+        padding: 24px;
+
+        border-radius: 18px;
+
+        border: 1px solid #e5e7eb;
+
+        box-shadow:
+            0 8px 25px
+            rgba(15, 23, 42, 0.06);
+
+        margin-bottom: 20px;
+    }
+
+    /* Section title */
+    .section-title {
+        font-size: 28px;
+        font-weight: 750;
+        color: #111827;
+        margin-top: 30px;
+        margin-bottom: 18px;
+    }
+
+    /* Skill badges */
+    .skill-badge {
+        display: inline-block;
+
+        background: #dbeafe;
+
+        color: #1e3a8a;
+
+        padding: 8px 14px;
+
+        border-radius: 30px;
+
+        margin: 4px;
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+        border: 1px solid #bfdbfe;
+    }
+
+    .missing-badge {
+        display: inline-block;
+
+        background: #fee2e2;
+
+        color: #991b1b;
+
+        padding: 8px 14px;
+
+        border-radius: 30px;
+
+        margin: 4px;
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+        border: 1px solid #fecaca;
+    }
+
+    /* Score */
+    .score-box {
+        text-align: center;
+
+        background: white;
+
+        padding: 25px;
+
+        border-radius: 18px;
+
+        border: 1px solid #e5e7eb;
+
+        box-shadow:
+            0 8px 25px
+            rgba(15, 23, 42, 0.06);
+    }
+
+    .score-number {
+        font-size: 42px;
+
+        font-weight: 800;
+
+        color: #1d4ed8;
+    }
+
+    .score-label {
+        font-size: 14px;
+
+        color: #64748b;
+
+        font-weight: 600;
+    }
+
+    /* Upload area */
+    [data-testid="stFileUploader"] {
+        background: white;
+
+        border-radius: 16px;
+
+        padding: 10px;
+
+        border: 1px solid #e5e7eb;
+    }
+
+    /* Button */
+    .stButton > button {
+
+        width: 100%;
+
+        border-radius: 12px;
+
+        padding: 12px 20px;
+
+        font-size: 16px;
+
+        font-weight: 700;
+
+        border: none;
+
+        background:
+            linear-gradient(
+                135deg,
+                #2563eb,
+                #4f46e5
+            );
+
+        color: white;
+
+        transition: 0.2s;
+    }
+
+    .stButton > button:hover {
+
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 8px 20px
+            rgba(37, 99, 235, 0.25);
+    }
+
+    /* Sidebar */
+    [data-testid="stSidebar"] {
+
+        background: #ffffff;
+
+        border-right:
+            1px solid #e5e7eb;
+    }
+
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
+# ============================================================
+# HERO SECTION
+# ============================================================
+
+st.markdown(
+    """
+    <div class="hero">
+
+        <h1>🚀 AI Resume & Career Advisor</h1>
+
+        <p>
+            Analyze your resume, discover skill gaps,
+            identify suitable career opportunities and
+            get an AI-powered personalized learning roadmap.
+        </p>
+
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+
+# ============================================================
+# SIDEBAR
+# ============================================================
+
+with st.sidebar:
+
+    st.markdown(
+        "## ⚙️ Resume Analysis"
+    )
+
+    st.write(
+        "Upload your resume PDF and select your target role."
+    )
+
+    st.divider()
+
+    uploaded_file = st.file_uploader(
+        "📄 Upload Resume",
+        type=["pdf"],
+        help="Upload a PDF version of your resume."
+    )
+
+    target_role = st.selectbox(
+        "🎯 Target Job Role",
+        [
+            "Automatic",
+            "Python Developer",
+            "Data Analyst",
+            "AI / ML Engineer",
+            "Software Developer",
+            "Full Stack Web Developer"
+        ]
+    )
+
+    st.divider()
+
+    st.caption(
+        "Powered by Python • RAG • FAISS • "
+        "n8n • Groq GPT-OSS-120B"
+    )
+
+
+# ============================================================
+# EMPTY STATE
+# ============================================================
+
+if uploaded_file is None:
+
+    st.markdown(
+        """
+        <div class="info-card">
+
+        <h2>📄 Start Your Career Analysis</h2>
+
+        <p>
+        Upload your resume using the sidebar.
+        Our AI system will analyze your skills,
+        compare them with job requirements and
+        generate personalized career advice.
+        </p>
+
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+
+        st.info(
+            "📊 Resume Score\n\n"
+            "Understand how well your resume "
+            "matches the selected role."
+        )
+
+    with col2:
+
+        st.info(
+            "🎯 Skill Gap\n\n"
+            "Identify important skills "
+            "you need to develop."
+        )
+
+    with col3:
+
+        st.info(
+            "🤖 AI Roadmap\n\n"
+            "Get personalized interview "
+            "and learning guidance."
+        )
+
+
+# ============================================================
+# UPLOAD SUCCESS
+# ============================================================
+
+if uploaded_file:
+
+    st.success(
+        f"✅ Resume uploaded: {uploaded_file.name}"
+    )
+
+    st.markdown(
+        "### Ready to analyze?"
+    )
+
+    analyze_button = st.button(
+        "🚀 Analyze My Resume"
+    )
+
+
+    # ========================================================
+    # ANALYSIS
+    # ========================================================
+
+    if analyze_button:
+
+        if not N8N_WEBHOOK_URL:
+
+            st.error(
+                "N8N_WEBHOOK_URL is missing from .env"
+            )
+
+            st.stop()
+
+
+        temp_path = None
+
+
+        try:
+
+            # ------------------------------------------------
+            # PROGRESS
+            # ------------------------------------------------
+
+            progress = st.progress(0)
+
+            status = st.empty()
+
+
+            # ------------------------------------------------
+            # SAVE PDF
+            # ------------------------------------------------
+
+            status.info(
+                "📄 Reading your resume..."
+            )
+
+            with tempfile.NamedTemporaryFile(
+                delete=False,
+                suffix=".pdf"
+            ) as temp_file:
+
+                temp_file.write(
+                    uploaded_file.getvalue()
+                )
+
+                temp_path = temp_file.name
+
+
+            progress.progress(15)
+
+
+            # ------------------------------------------------
+            # EXTRACT TEXT
+            # ------------------------------------------------
+
+            status.info(
+                "🔍 Extracting resume information..."
+            )
+
+            resume_text = extract_text_from_pdf(
+                temp_path
+            )
+
+            progress.progress(30)
+
+
+            # ------------------------------------------------
+            # RESUME ANALYSIS
+            # ------------------------------------------------
+
+            status.info(
+                "🧠 AI is analyzing your resume..."
+            )
+
+            resume_data = analyze_resume(
+                resume_text
+            )
+
+            progress.progress(45)
+
+
+            # ------------------------------------------------
+            # RAG SEARCH
+            # ------------------------------------------------
+
+            status.info(
+                "🔎 Finding the most relevant job description..."
+            )
+
+
+            if target_role == "Automatic":
+
+                query = f"""
+                Candidate skills:
+                {", ".join(resume_data.skills)}
+
+                Find the most suitable job role
+                for this candidate.
+                """
+
+            else:
+
+                query = f"""
+                Target job role:
+                {target_role}
+
+                Candidate skills:
+                {", ".join(resume_data.skills)}
+                """
+
+
+            results = search_jobs(
+                query,
+                k=1
+            )
+
+
+            if results:
+
+                job_description = (
+                    results[0].page_content
+                )
+
+                job_source = (
+                    results[0]
+                    .metadata
+                    .get(
+                        "source",
+                        "Unknown"
+                    )
+                )
+
+            else:
+
+                job_description = ""
+
+                job_source = "No job description found"
+
+
+            progress.progress(60)
+
+
+            # ------------------------------------------------
+            # SKILL GAP
+            # ------------------------------------------------
+
+            status.info(
+                "🎯 Calculating your skill gap..."
+            )
+
+            skill_gap = analyze_skill_gap(
+                resume_data,
+                job_description
+            )
+
+            progress.progress(75)
+
+
+            # ------------------------------------------------
+            # PREPARE N8N PAYLOAD
+            # ------------------------------------------------
+
+            payload = {
+
+                "name": resume_data.name,
+
+                "skills": resume_data.skills,
+
+                "education": resume_data.education,
+
+                "projects": [
+
+                    {
+                        "name": project.name,
+                        "description": project.description
+                    }
+
+                    for project in resume_data.projects
+
+                ],
+
+                "job_role": skill_gap.get(
+                    "job_role",
+                    target_role
+                ),
+
+                "match_percentage": skill_gap.get(
+                    "match_percentage",
+                    0
+                ),
+
+                "matching_skills": skill_gap.get(
+                    "matching_skills",
+                    []
+                ),
+
+                "missing_skills": skill_gap.get(
+                    "missing_skills",
+                    []
+                ),
+
+                "additional_recommendations":
+                    skill_gap.get(
+                        "additional_recommendations",
+                        []
+                    ),
+
+                "overall_feedback":
+                    skill_gap.get(
+                        "overall_feedback",
+                        ""
+                    ),
+
+                "job_description":
+                    job_description
+            }
+
+
+            # ------------------------------------------------
+            # SEND TO N8N
+            # ------------------------------------------------
+
+            status.info(
+                "🤖 Career Advisor Agent is preparing your advice..."
+            )
+
+
+            n8n_response = requests.post(
+
+                N8N_WEBHOOK_URL,
+
+                json=payload,
+
+                timeout=120
+
+            )
+
+
+            progress.progress(90)
+
+
+            # ------------------------------------------------
+            # HANDLE N8N RESPONSE
+            # ------------------------------------------------
+
+            if n8n_response.status_code == 200:
+
+                try:
+
+                    n8n_data = (
+                        n8n_response.json()
+                    )
+
+                    career_advice = (
+                        n8n_data.get(
+                            "career_advice",
+                            ""
+                        )
+                    )
+
+                except Exception:
+
+                    career_advice = (
+                        n8n_response.text
+                    )
+
+            else:
+
+                career_advice = (
+                    "Career Advisor service "
+                    "returned an error."
+                )
+
+
+            # ------------------------------------------------
+            # SAVE RESULTS
+            # ------------------------------------------------
+
+            st.session_state[
+                "resume"
+            ] = resume_data
+
+            st.session_state[
+                "skill_gap"
+            ] = skill_gap
+
+            st.session_state[
+                "career_advice"
+            ] = career_advice
+
+            st.session_state[
+                "job_source"
+            ] = job_source
+
+
+            progress.progress(100)
+
+            status.success(
+                "✅ Analysis completed successfully!"
+            )
+
+
+        except Exception as error:
+
+            st.error(
+                "❌ Something went wrong during analysis."
+            )
+
+            st.exception(
+                error
+            )
+
+
+        finally:
+
+            if temp_path and os.path.exists(
+                temp_path
+            ):
+
+                os.remove(
+                    temp_path
+                )
+
+
+# ============================================================
+# DISPLAY RESULTS
+# ============================================================
+
+if "resume" in st.session_state:
+
+    resume = st.session_state[
+        "resume"
+    ]
+
+    gap = st.session_state[
+        "skill_gap"
+    ]
+
+    career_advice = st.session_state[
+        "career_advice"
+    ]
+
+    job_source = st.session_state[
+        "job_source"
+    ]
+
+
+    # ========================================================
+    # CANDIDATE HEADER
+    # ========================================================
+
+    st.markdown(
+        f"""
+        <div class="info-card">
+
+            <h1>👋 Hello, {resume.name}</h1>
+
+            <p>
+                Here's your AI-powered resume and
+                career analysis.
+            </p>
+
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+    # ========================================================
+    # SCORE CARDS
+    # ========================================================
+
+    st.markdown(
+        '<div class="section-title">📊 Resume Overview</div>',
+        unsafe_allow_html=True
+    )
+
+
+    col1, col2, col3 = st.columns(3)
+
+
+    with col1:
+
+        match = gap.get(
+            "match_percentage",
+            0
+        )
+
+        st.markdown(
+            f"""
+            <div class="score-box">
+
+                <div class="score-number">
+                    {match}%
+                </div>
+
+                <div class="score-label">
+                    JOB MATCH
+                </div>
+
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+
+    with col2:
+
+        matching_count = len(
+            gap.get(
+                "matching_skills",
+                []
+            )
+        )
+
+        st.markdown(
+            f"""
+            <div class="score-box">
+
+                <div class="score-number">
+                    {matching_count}
+                </div>
+
+                <div class="score-label">
+                    MATCHING SKILLS
+                </div>
+
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+
+    with col3:
+
+        missing_count = len(
+            gap.get(
+                "missing_skills",
+                []
+            )
+        )
+
+        st.markdown(
+            f"""
+            <div class="score-box">
+
+                <div class="score-number">
+                    {missing_count}
+                </div>
+
+                <div class="score-label">
+                    SKILLS TO LEARN
+                </div>
+
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+
+    # ========================================================
+    # CURRENT SKILLS
+    # ========================================================
+
+    st.markdown(
+        '<div class="section-title">💻 Your Skills</div>',
+        unsafe_allow_html=True
+    )
+
+
+    skills_html = ""
+
+
+    for skill in resume.skills:
+
+        skills_html += (
+            f'<span class="skill-badge">'
+            f'{skill}'
+            f'</span>'
+        )
+
+
+    st.markdown(
+        f"""
+        <div class="info-card">
+            {skills_html}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+    # ========================================================
+    # SKILL GAP
+    # ========================================================
+
+    st.markdown(
+        '<div class="section-title">🎯 Skill Gap Analysis</div>',
+        unsafe_allow_html=True
+    )
+
+
+    col1, col2 = st.columns(2)
+
+
+    with col1:
+
+        st.subheader(
+            "✅ Matching Skills"
+        )
+
+        matching_skills = gap.get(
+            "matching_skills",
+            []
+        )
+
+        if matching_skills:
+
+            for skill in matching_skills:
+
+                st.markdown(
+                    f"""
+                    <span class="skill-badge">
+                    ✓ {skill}
+                    </span>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+        else:
+
+            st.write(
+                "No matching skills found."
+            )
+
+
+    with col2:
+
+        st.subheader(
+            "❌ Missing Skills"
+        )
+
+        missing_skills = gap.get(
+            "missing_skills",
+            []
+        )
+
+        if missing_skills:
+
+            for skill in missing_skills:
+
+                st.markdown(
+                    f"""
+                    <span class="missing-badge">
+                    {skill}
+                    </span>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+        else:
+
+            st.success(
+                "No major skill gaps detected!"
+            )
+
+
+    # ========================================================
+    # RESUME FEEDBACK
+    # ========================================================
+
+    st.markdown(
+        '<div class="section-title">📝 Resume Feedback</div>',
+        unsafe_allow_html=True
+    )
+
+
+    st.markdown(
+        f"""
+        <div class="info-card">
+
+        {gap.get(
+            "overall_feedback",
+            "No feedback available."
+        )}
+
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+    # ========================================================
+    # RECOMMENDATIONS
+    # ========================================================
+
+    st.markdown(
+        '<div class="section-title">💡 Recommendations</div>',
+        unsafe_allow_html=True
+    )
+
+
+    recommendations = gap.get(
+        "additional_recommendations",
+        []
+    )
+
+
+    if recommendations:
+
+        for recommendation in recommendations:
+
+            st.info(
+                f"👉 {recommendation}"
+            )
+
+    else:
+
+        st.write(
+            "No additional recommendations."
+        )
+
+
+    # ========================================================
+    # AI CAREER ADVISOR
+    # ========================================================
+
+    st.markdown(
+        '<div class="section-title">🤖 AI Career Advisor</div>',
+        unsafe_allow_html=True
+    )
+
+
+    st.markdown(
+        f"""
+        <div class="info-card">
+
+        {career_advice}
+
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+
+    # ========================================================
+    # JOB SOURCE
+    # ========================================================
+
+    st.caption(
+        f"🔎 Job Description Source: {job_source}"
+    )
